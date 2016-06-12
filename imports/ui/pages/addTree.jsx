@@ -58,6 +58,9 @@ class AddTree extends Component {
 
                 //Insert into database
                 Meteor.call('trees.insert', treeName, treeDescription, treeRating, treeLocation);
+
+                // Materialize.toast(message, displayLength, className, completeCallback);
+                Materialize.toast('New tree saved!', 1000) // 4000 is the duration of the toast
             })
             .catch(function(reason) {
                 console.log("Promise was rejected: ", reason);
@@ -67,6 +70,8 @@ class AddTree extends Component {
         ReactDOM.findDOMNode(this.refs.nameInput).value = '';
         ReactDOM.findDOMNode(this.refs.descriptionInput).value = '';
         ReactDOM.findDOMNode(this.refs.ratingInput).value = '';
+
+
     }
 
     render() {
@@ -75,7 +80,7 @@ class AddTree extends Component {
 
         return (
             <div>
-                <h3>Add a New Tree</h3>
+                <h5>Add a New Tree</h5>
                 <div className="row">
 
                     <form className="col s12" onSubmit={this.submitTree.bind(this)}>
@@ -100,7 +105,7 @@ class AddTree extends Component {
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">star_rate</i>
 
-                                <select ref="ratingInput">
+                                <select ref="ratingInput" className="select-with-icon">
                                     <option value="" disabled>Rate the tree</option>
                                     <option value="5">★★★★★ Awesome!</option>
                                     <option value="4">★★★★ Pretty Cool</option>
@@ -108,6 +113,8 @@ class AddTree extends Component {
                                     <option value="2">★★ I've seen better</option>
                                     <option value="1">★ Don't bother...</option>
                                 </select>
+
+
 
                                 <label>Rate the tree</label>
                             </div>

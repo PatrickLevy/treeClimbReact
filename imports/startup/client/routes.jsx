@@ -15,6 +15,8 @@ import { TreeList } from '../../ui/pages/treeList.jsx';
 
 import AddTree from '../../ui/pages/addTree.jsx';
 
+import Login from '../../ui/pages/login.jsx';
+
 //demo putting the todos app on the page
 import Todos from '../../ui/App.jsx';
 
@@ -30,7 +32,7 @@ Meteor.startup( () => {
                 <Route path="/addTree" component={ AddTree } />
                 <Route path="/two" component={ Two } />
                 <Route path="/hello/:name" component={ Hello } />
-                <Route path="/login" component={ Todos } />
+                <Route path="/login" component={ Login } />
             </Route>
             <Route path="*" component={ NotFound } />
         </Router>,
