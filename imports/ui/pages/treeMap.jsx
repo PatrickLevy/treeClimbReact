@@ -61,12 +61,10 @@ export default MapContainer = createContainer(({ params }) => {
     //These are the props that will get passed to MyTestMap
     return {
         trees: Trees.find({}, { sort: { createdAt: -1 } }).fetch(),
-        loaded: GoogleMaps.loaded() && !!currentLocation,
+        loaded: GoogleMaps.loaded() && !!currentLocation && !!Trees.findOne(),
         mapOptions: GoogleMaps.loaded() && !!currentLocation && {center: new google.maps.LatLng(currentLocation.coords.latitude, currentLocation.coords.longitude), zoom: zoom}
     };
 }, TreeMap);
-
-
 
 
 //Google Map Component
@@ -92,7 +90,8 @@ class GoogleMap extends Component {
             //Add location marker to the map
             var marker = new google.maps.Marker({
                 position: map.options.center,
-                map: map.instance
+                map: map.instance,
+                title: "Current Location"
             });
 
             //Add trees from the database to the map
