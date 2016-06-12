@@ -8,6 +8,9 @@ App = React.createClass({
     }
 });
 
+//NOTE: This file is not being used and can be deleted.
+//It uses the older style React.createClass rather than imports and exports
+
 MyTestMap = React.createClass({
     mixins: [ReactMeteorData],
     componentDidMount() {
