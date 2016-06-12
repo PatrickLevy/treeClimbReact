@@ -3,6 +3,8 @@
 //
 // export const Tasks = new Mongo.Collection('tasks');
 
+//NOTE:  The api files must be imported into /server/main.js in order to actually run!!!!!!!!!!!
+
 //AFTER INSECURE was removed
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';

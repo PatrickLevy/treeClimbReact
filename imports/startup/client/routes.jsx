@@ -10,9 +10,10 @@ import { Two } from '../../ui/pages/two.jsx';
 import { NotFound } from '../../ui/pages/not-found.jsx';
 import { Hello } from '../../ui/pages/hello.jsx';
 
-import FindTrees from '../../ui/pages/findTrees.jsx';
+import TreeMap from '../../ui/pages/treeMap.jsx';
+import { TreeList } from '../../ui/pages/treeList.jsx';
 
-import exampleMap from '../../ui/pages/exampleMap-updated.jsx';
+import AddTree from '../../ui/pages/addTree.jsx';
 
 //demo putting the todos app on the page
 import Todos from '../../ui/App.jsx';
@@ -24,10 +25,12 @@ Meteor.startup( () => {
         <Router history={ browserHistory }>
             <Route path="/" component={ App }>
                 <IndexRoute component={ Index } />
-                <Route path="/findTrees" component={ exampleMap } />
+                <Route path="/findTrees" component={ TreeMap } />
+                <Route path="/findTrees/list" component={ TreeList } />
+                <Route path="/addTree" component={ AddTree } />
                 <Route path="/two" component={ Two } />
                 <Route path="/hello/:name" component={ Hello } />
-                <Route path="/todos" component={ Todos } />
+                <Route path="/login" component={ Todos } />
             </Route>
             <Route path="*" component={ NotFound } />
         </Router>,
