@@ -55,14 +55,14 @@ TreeMap.propTypes = {
 export default MapContainer = createContainer(({ params }) => {
     Meteor.subscribe('trees');
     const zoom = 19;
-    var currentLocation = Geolocation.currentLocation();
+    var currentLocation = Geolocation.latLng();
     console.log("currentLocation", currentLocation);
 
     //These are the props that will get passed to MyTestMap
     return {
         trees: Trees.find({}, { sort: { createdAt: -1 } }).fetch(),
         loaded: GoogleMaps.loaded() && !!currentLocation && !!Trees.findOne(),
-        mapOptions: GoogleMaps.loaded() && !!currentLocation && {center: new google.maps.LatLng(currentLocation.coords.latitude, currentLocation.coords.longitude), zoom: zoom}
+        mapOptions: GoogleMaps.loaded() && !!currentLocation && {center: new google.maps.LatLng(currentLocation.lat, currentLocation.lng), zoom: zoom}
     };
 }, TreeMap);
 
