@@ -19,7 +19,7 @@ export default class Navigation extends Component {
                     <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
 
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
+                        <li><IndexLink to="/" activeClassName="active">Tree Home</IndexLink></li>
                         <li><Link to="/findTrees" activeClassName="active">Find a Tree</Link></li>
                         <li><Link to="/addTree" activeClassName="active">Add a Tree</Link></li>
                         <li><Link to="/login" activeClassName="active">Login</Link></li>
