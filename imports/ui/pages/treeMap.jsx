@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Link } from 'react-router';
+import { Trees } from '../../api/trees.js';
 
 App = React.createClass({
     render() {
@@ -14,7 +15,6 @@ class TreeMap extends Component {
     //mixins: [ReactMeteorData],
     componentDidMount() {
         console.log("About to load GoogleMaps...");
-
         GoogleMaps.load({key: "AIzaSyDnTqJ62KeCAZfZQk244RE5R-HFL1ntQkM"});
     }
     // _mapOptions() {
@@ -27,7 +27,7 @@ class TreeMap extends Component {
         if (this.props.loaded)
             return (
                 <div>
-                    <GoogleMap name="mymap" options={this.props.mapOptions} />
+                    <GoogleMap name="mymap" options={this.props.mapOptions} trees={this.props.trees} />
                     <Link to="/findTrees/list" activeClassName="active">Switch to list view</Link>
                 </div>
             );
@@ -51,38 +51,32 @@ TreeMap.propTypes = {
     //mapOptions: React.PropTypes.object,
 };
 
+//Data Container
 export default MapContainer = createContainer(({ params }) => {
-    //const { id } = params;
-    //const todosHandle = Meteor.subscribe('todos.inList', id);
-    //const loading = !todosHandle.ready();
-    //const list = Lists.findOne(id);
-    //const listExists = !loading && !!list;
-    // _mapOptions(){
-    //     return {
-    //         center: new google.maps.LatLng(-37.8136, 144.9631),
-    //         zoom: 8
-    //     };
-    // }
-
-    // const lat = 45.00;
-    // const lng = -93.00;
-    const zoom = 8;
-
-    var currentLocation = Geolocation.currentLocation();
+    Meteor.subscribe('trees');
+    const zoom = 19;
+    var currentLocation = Geolocation.latLng();
     console.log("currentLocation", currentLocation);
 
     //These are the props that will get passed to MyTestMap
     return {
-        loaded: GoogleMaps.loaded() && !!currentLocation,
-        mapOptions: GoogleMaps.loaded() && !!currentLocation && {center: new google.maps.LatLng(currentLocation.coords.latitude, currentLocation.coords.longitude), zoom: zoom}
+        trees: Trees.find({}, { sort: { createdAt: -1 } }).fetch(),
+        loaded: GoogleMaps.loaded() && !!currentLocation && !!Trees.findOne(),
+        mapOptions: GoogleMaps.loaded() && !!currentLocation && {center: new google.maps.LatLng(currentLocation.lat, currentLocation.lng), zoom: zoom}
     };
 }, TreeMap);
 
-GoogleMap = React.createClass({
-    propTypes: {
-        name: React.PropTypes.string.isRequired,
-        options: React.PropTypes.object.isRequired
-    },
+
+//Google Map Component
+class GoogleMap extends Component {
+
+    drawNewMarker(latlng) {
+        var latAndLng = {lat: 45, lng: -93};
+        var marker = new google.maps.Marker({
+            position: latAndLng,
+            map: map.instance
+        });
+    }
     componentDidMount() {
         GoogleMaps.create({
             name: this.props.name,
@@ -90,27 +84,47 @@ GoogleMap = React.createClass({
             options: this.props.options
         });
 
+        var trees = this.props.trees;
         GoogleMaps.ready(this.props.name, function(map) {
+
+            //Add location marker to the map
             var marker = new google.maps.Marker({
                 position: map.options.center,
-                map: map.instance
+                map: map.instance,
+                title: "Current Location"
             });
+
+            //Add trees from the database to the map
+            //var treeIcon = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            var treeIcon = 'tree-marker.png'
+            _.each(trees, function(tree) {
+                console.log(tree);
+                var marker = new google.maps.Marker({
+                    position: tree.treeLocation,
+                    title: tree.treeName,
+                    map: map.instance,
+                    //icon: treeIcon
+
+                });
+            })
         });
-    },
+
+
+    }
     componentWillUnmount() {
         if (GoogleMaps.maps[this.props.name]) {
             google.maps.event.clearInstanceListeners(GoogleMaps.maps[this.props.name].instance);
             delete GoogleMaps.maps[this.props.name];
         }
-    },
+    }
     render() {
         return <div className="map-container"></div>;
     }
-});
+}
 
-// if (Meteor.isClient) {
-//     Meteor.startup(function() {
-//         console.log("running the startup function");
-//         return render(<App />, document.getElementById('react-root'));
-//     });
-// }
+GoogleMap.propTypes = {
+    name: React.PropTypes.string.isRequired,
+        options: React.PropTypes.object.isRequired,
+        trees: React.PropTypes.array.isRequired
+}
+
