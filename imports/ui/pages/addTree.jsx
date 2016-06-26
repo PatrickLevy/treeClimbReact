@@ -57,10 +57,18 @@ class AddTree extends Component {
                 console.log(treeLocation);
 
                 //Insert into database
-                Meteor.call('trees.insert', treeName, treeDescription, treeRating, treeLocation);
+                Meteor.call('trees.insert', treeName, treeDescription, treeRating, treeLocation, function(err, res) {
+                    if (err){
+                        console.log("Tree not added...check that you are logged in");
+                        Materialize.toast("Sorry...tree was not able to be added.\nDid you create an account and login?", 3000)
+                    }
+                    else {
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast('New tree saved!', 3000) // 4000 is the duration of the toast
+                    }
+                });
 
-                // Materialize.toast(message, displayLength, className, completeCallback);
-                Materialize.toast('New tree saved!', 1000) // 4000 is the duration of the toast
+
             })
             .catch(function(reason) {
                 console.log("Promise was rejected: ", reason);
