@@ -98,15 +98,31 @@ class GoogleMap extends Component {
             var treeIcon = 'favicon.ico'
             _.each(trees, function(tree) {
                 console.log(tree);
+
+                var infoContent =   '<div>' +
+                                        '<h6>' + tree.treeName + '</h6>' +
+                                        '<div>' + 'Description: ' + tree.treeDescription + '</div>' +
+                                        '<div>' + 'Rating: ' + tree.treeRating + ' stars' + '</div>' +
+                                    '</div>';
+                var infowindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
                 var marker = new google.maps.Marker({
                     position: tree.treeLocation,
                     title: tree.treeName,
                     map: map.instance,
+                    animation: google.maps.Animation.DROP,
                     icon: treeIcon
 
                 });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+
             })
         });
+
+        Materialize.toast("Click on a tree to view it's description", 3000);
 
 
     }
