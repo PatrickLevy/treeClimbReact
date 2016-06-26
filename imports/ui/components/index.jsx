@@ -4,7 +4,7 @@ export const Index = () => (
     <div>
         <row>
             <div class="container">
-                <img width="650" src="/tree.jpg"/>
+                <img width="300" src="/tree.jpg"/>
             </div>
         </row>
     </div>
