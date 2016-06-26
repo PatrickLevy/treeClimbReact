@@ -28,7 +28,6 @@ class TreeMap extends Component {
             return (
                 <div>
                     <GoogleMap name="mymap" options={this.props.mapOptions} trees={this.props.trees} />
-                    <Link to="/findTrees/list" activeClassName="active">Switch to list view</Link>
                 </div>
             );
 
@@ -96,14 +95,14 @@ class GoogleMap extends Component {
 
             //Add trees from the database to the map
             //var treeIcon = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-            var treeIcon = 'tree-marker.png'
+            var treeIcon = 'favicon.ico'
             _.each(trees, function(tree) {
                 console.log(tree);
                 var marker = new google.maps.Marker({
                     position: tree.treeLocation,
                     title: tree.treeName,
                     map: map.instance,
-                    //icon: treeIcon
+                    icon: treeIcon
 
                 });
             })
