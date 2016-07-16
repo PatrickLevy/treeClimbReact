@@ -27,7 +27,7 @@ class TreeMap extends Component {
         if (this.props.loaded)
             return (
                 <div>
-                    <a href="/findTrees/list">Switch to List View</a>
+                    <Link to="/findTrees/list" activeClassName="active">Switch to list view</Link>
                     <GoogleMap name="mymap" options={this.props.mapOptions} trees={this.props.trees} />
                 </div>
             );
